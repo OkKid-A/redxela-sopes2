@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>REDXela - Centro de Distribución</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>REDXela <small>Centro de distribución · Sistemas Operativos 2</small></h1>
+  <div id="conn" class="pill ok">conectado</div>
+</header>
+
+<main>
+  <!-- Controles globales -->
+  <section class="card wide" id="controls">
+    <h2>Control del sistema</h2>
+    <div class="row">
+      <label>Política de planificación
+        <select id="policy"></select>
+      </label>
+      <label class="check"><input type="checkbox" id="prevention"> Prevención de deadlock (orden fijo de recursos)</label>
+      <span class="sep"></span>
+      <label>Un pedido cada <input type="number" id="genInterval" value="2500" min="100" step="100" style="width:80px"> ms</label>
+      <label class="check"><input type="checkbox" id="genArrivals" checked> camiones automáticos</label>
+      <button id="genToggle" class="primary">Iniciar generador</button>
+      <span class="sep"></span>
+      <button id="provoke" class="danger">Provocar deadlock</button>
+      <button id="resetStats">Reiniciar estadísticas</button>
+    </div>
+    <p id="policyDesc" class="muted"></p>
+  </section>
+
+  <!-- Alerta de deadlock -->
+  <section class="card wide alert" id="deadlockBox" hidden>
+    <h2>⚠ DEADLOCK detectado</h2>
+    <p id="deadlockWhy"></p>
+    <table id="deadlockTable"></table>
+    <p class="muted">Elija cuál operación continúa con los recursos en disputa; las demás soltarán lo que retienen y volverán a la lista de espera.</p>
+    <div id="deadlockButtons" class="row"></div>
+  </section>
+
+  <!-- Recursos -->
+  <section class="card wide">
+    <h2>Recursos compartidos</h2>
+    <div id="resources" class="grid res"></div>
+  </section>
+
+  <section class="card wide">
+    <h2>Pedidos en proceso <span class="count" id="procCount"></span></h2>
+    <div class="scroll"><table id="processing"></table></div>
+  </section>
+
+  <section class="card wide">
+    <h2>Lista de espera <span class="count" id="waitCount"></span></h2>
+    <p class="muted" id="waitCriterion"></p>
+    <div class="scroll tall"><table id="waiting"></table></div>
+  </section>
+
+  <section class="card">
+    <h2>Estadísticas generales</h2>
+    <div id="statsGlobal" class="kpis"></div>
+    <h3>Comparación por política de planificación</h3>
+    <table id="statsPolicy"></table>
+    <h3>Por nivel de servicio</h3>
+    <table id="statsLevel"></table>
+  </section>
+
+  <section class="card">
+    <h2>Registrar manualmente</h2>
+    <form id="orderForm">
+      <h3>Nuevo pedido</h3>
+      <label>Cliente <select id="orderCustomer"></select></label>
+      <div id="orderRows"></div>
+      <button class="primary">Crear pedido</button>
+    </form>
+    <form id="arrivalForm">
+      <h3>Llegada de mercadería</h3>
+      <div class="row">
+        <select id="arrivalProduct"></select>
+        <input type="number" id="arrivalQty" value="50" min="1" style="width:80px">
+        <button class="primary">Registrar llegada</button>
+      </div>
+    </form>
+    <form id="customerForm">
+      <h3>Nueva cuenta de cliente</h3>
+      <div class="row">
+        <input type="text" id="custName" placeholder="Nombre del cliente" required>
+        <select id="custLevel"></select>
+        <button class="primary">Crear cuenta</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>Recepción → Inventario</h2>
+    <div id="mailbox"></div>
+    <h3>Existencias</h3>
+    <table id="stock"></table>
+  </section>
+
+  <section class="card">
+    <h2>Almacén <span class="count" id="whCount"></span></h2>
+    <div id="warehouse"></div>
+    <div id="whLegend" class="legend"></div>
+    <h3>Lotes y sus ubicaciones</h3>
+    <div class="scroll"><table id="lots"></table></div>
+  </section>
+
+  <section class="card wide">
+    <h2>Tipos de mercancía</h2>
+    <table id="types"></table>
+  </section>
+
+  <section class="card wide">
+    <h2>Bitácora</h2>
+    <pre id="events"></pre>
+  </section>
+</main>
+<div id="toast" hidden></div>
+<script src="app.js"></script>
+</body>
+</html>
